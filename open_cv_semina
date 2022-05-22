@@ -564,4 +564,240 @@ int main() {
 	imshow("abs_dif1", abs_dif1), imshow("abs_dif2", abs_dif2);
 	return 0;
 }
+*/
+
+*
+int main() {
+	uchar data[] = {
+	10,200,5,7,9,
+	15,35,60,80,170,
+	100,2,55,37,70 };
+
+	Mat  m1(3, 5, CV_8U, data);
+	Mat m2(3, 5, CV_8U, Scalar(50));
+	Mat m_min, m_max;
+	double minVal, maxVal;
+	int minIdx[2] = {}, maxIdx[2] = {};
+	Point minLoc, maxLoc;
+
+	min(m1, 30, m_min);
+	max(m1, m2, m_max);
+	minMaxIdx(m1, &minVal, &maxVal, minIdx, maxIdx);
+	//val은 주소를 받기 위해 참조 연산자,dx는 배열이므로 배열이름의 주소.
+	minMaxLoc(m1, 0, 0, &minLoc, &maxLoc); 
+	//min,max 주소 전달,인수가 반환받을 필요가 없을경우 0반환
+
+	cout << "[m1] = " << endl << m1 << endl << endl;
+	cout << "[m_min] = " << endl << m_min << endl;
+	cout << "[m_max] = " << endl << m_max << endl << endl;
+
+	cout << "m1 행렬 원소 최솟값 : " << minVal << endl;
+	cout << "최솟값 좌표 : " << minIdx[1] << "," << minIdx[0] << endl;
+
+	cout << "m1 행렬 원소 최댓값 : " << maxVal << endl;
+	cout << "최댓값 좌표 : " << maxIdx[1] << "," << maxIdx[0] << endl;
+
+	cout << "m1 행렬 최솟값 좌표 : " << minLoc << endl;
+	cout << "m2 행렬 최댓값 좌표 : " << maxLoc << endl;
+	return 0;
+}
+*/
+/*
+int main() {
+//화질개선 가능!! 최솟값과 최댓값의 차이가 작을 수록
+	Mat image = imread("C://Users/user/Desktop/456.png", IMREAD_GRAYSCALE);
+	double minVal, maxVal;
+	minMaxIdx(image, &minVal, &maxVal);
+	double ratio = (maxVal - minVal) / 255.0;
+	Mat dst = (image - minVal) / ratio;
+
+	cout << "최솟값 = " << minVal << endl;
+	cout << "최댓값 = " << maxVal << endl;
+	imshow("image", image);
+	imshow("dst", dst);
+	waitKey();
+	return 0;
+}
+*/
+
+/*
+int main() {
+	Mat image = imread("C://Users/user/Desktop/tomato.jpg", 1);
+	CV_Assert(image.data);
+	Mat mask(image.size(), CV_8U, Scalar(0)), mean, stddev;
+	mask(Rect(20, 40, 70, 70)).setTo(255);
+
+	Scalar sum_value = sum(image);
+	Scalar mean_value1 = mean(image);
+	Scalar mean_value2 = mean(image, mask);
+
+	cout << "[sum_value] = " << sum_value << endl;
+	cout << "[sum_value1] = " << mean_value1 << endl;
+	cout << "[sum_value2] = " << mean_value2 << endl;
+
+	meanStdDev(image, mean, stddev);
+	cout << "[mean] = " << mean << endl;
+	cout << "[stddev] = " << stddev << endl << endl;
+
+	meanStdDev(image, mean, stddev, mask);
+	cout << "[mean] = " << mean << endl;
+	cout << "[stddev] = " << stddev << endl;
+
+	imshow("image", image), imshow("mask", mask);
+	waitKey();
+	return 0;
+}
+*/
+
+/*
+int main() {
+	Mat_<uchar> m1(3, 5);
+	m1 << 11, 2, 3, 4, 10, 6, 10, 15, 9, 7, 7, 12, 8, 14, 1;
+
+	Mat m_sort1, m_sort2, m_sort3, m_sort_idx1, m_sort_idx2;
+	cv::sort(m1, m_sort1, SORT_EVERY_ROW);//행오름
+	cv::sort(m1, m_sort2, SORT_EVERY_ROW+SORT_DESCENDING);//행내림
+	cv::sort(m1, m_sort3, SORT_EVERY_COLUMN);//열오름
+
+	cout << "[m1] = " << endl << m1 << endl << endl;
+	cout << "[m_sort1] = " << endl << m_sort1 << endl << endl;
+	cout << "[m_sort2] = " << endl << m_sort2 << endl << endl;
+	cout << "[m_sort3] = " << endl << m_sort3 << endl << endl;
+	return 0;
+}
+*/
+
+/*
+int main() {
+	Mat_<uchar> m1(3, 5);
+	m1 << 11, 2, 3, 4, 10, 6, 10, 15, 9, 7, 7, 12, 8, 14, 1;
+
+	Mat m_sort_idx1, m_sort_idx2, m_sort_id3;
+	sortIdx(m1, m_sort_idx1, SORT_EVERY_ROW);
+	sortIdx(m1, m_sort_idx2, SORT_EVERY_COLUMN);
+	//sort인덱스와 index값은 다르다. 원본원소와 원본좌표
+
+	cout << "[m1] = " << endl << m1 << endl << endl;
+	cout << "[m_sort_idx1] = " << endl << m_sort_idx1 << endl << endl;
+	cout << "[m_sort_idx2] = " << endl << m_sort_idx2 << endl << endl;
+	return 0;
+}
+*/
+
+/*
+int main() {
+	Matx<ushort, 5, 4> pts;
+	Mat_<int> sizes, sort_idx;
+	vector<Rect> rects;
+	randn(pts, Scalar(200), Scalar(100));
+
+	cout << "---------------------" << endl;
+	cout << "  랜덤 사각형 정보" << endl;
+	cout << "---------------------" << endl;
+	for (int i = 0; i < pts.rows; i++) {
+		Point pt1(pts(i, 0), pts(i, 1));
+		Point pt2(pts(i, 2), pts(i, 3));
+		rects.push_back(Rect(pt1, pt2));
+		sizes.push_back(rects[i].area());
+		cout << format("rect[%d] = ", i) << rects[i] << endl;
+	}
+	sortIdx(sizes, sort_idx, SORT_EVERY_COLUMN+SORT_DESCENDING);
+
+	cout << endl << " 크기순 정렬 사각형 정보 \t크기 " << endl;
+	cout << "---------------------" << endl;
+	for (int i = 0; i < rects.size(); i++) {
+		int idx = sort_idx(i);
+		cout << rects[idx] << "\t" << sizes(idx) << endl;
+	}
+	cout << "---------------------" << endl;
+	return 0;
+
+}
+*/
+
+/*
+int main() {
+//형렬 감축 연산
+	Mat_<double> m1(3, 5);
+	m1 << 11, 2, 3, 4, 10, 6, 10, 15, 9, 7, 7, 12, 8, 14, 1;
+	Mat m_reduce1, m_reduce2, m_reduce3, m_reduce4;
+	
+	reduce(m1, m_reduce1, 0, REDUCE_SUM);
+	reduce(m1, m_reduce2, 1, REDUCE_AVG);
+	reduce(m1, m_reduce3, 0, REDUCE_MAX);
+	reduce(m1, m_reduce4, 1, REDUCE_MIN);
+
+	cout << "[m1] = " << endl<<m1 << endl << endl;
+	cout << "[m_reduce_sum] = "<<m_reduce1<< endl<<endl;
+	cout << "[m_reduce_avg] = "<< m_reduce2<<endl;
+	cout << "[m_reduce_max] = "<< m_reduce3<<endl;
+	cout << "[m_reduce_min] = "<<m_reduce4<< endl;
+	return 0;
+}
+*/
+
+/*
+int main() {
+	Matx23f src1(1, 2, 3, 4, 5, 1);
+	Matx23f src2(5, 4, 2, 3, 2, 1);
+	Matx32f src3(5, 4, 2, 3, 2, 1);
+	Mat dst1, dst2, dst3;
+	double alpha = 1.0, beta = 1.0;
+
+	gemm(src1, src2, alpha, Mat(), beta, dst1, GEMM_1_T);
+	gemm(src1, src2, alpha, noArray(), beta, dst2, GEMM_2_T);
+	gemm(src1, src3, alpha, noArray(), beta, dst3);
+
+	cout << "[src1] = " << endl << src1 << endl;
+	cout << "[src2] = " << endl << src2 << endl;
+	cout << "[src3] = " << endl << src3 << endl<<endl;
+
+	cout << "[dst1] = " << endl << dst1 << endl;
+	cout << "[dst2] = " << endl << dst2 << endl << endl;
+	cout << "[dst3] = " << endl << dst3 << endl;
+	return 0;
+}
+*/
+
+/*
+int main() {
+	vector<Point> rect_pt1, rect_pt2;
+	rect_pt1.push_back(Point(200, 50));
+	rect_pt1.push_back(Point(400, 50));
+	rect_pt1.push_back(Point(400, 250));
+	rect_pt1.push_back(Point(200, 250));
+
+	float theta = 20 * CV_PI / 180;
+	Matx22f m(cos(theta), -sin(theta), sin(theta), cos(theta));
+	transform(rect_pt1, rect_pt2, m);
+
+	Mat image(400, 500, CV_8UC3, Scalar(255, 255, 255));
+	for (int i = 0; i < 4; i++) {
+		line(image, rect_pt1[i], rect_pt1[(i + 1) % 4], Scalar(0, 0, 0), 1);
+		line(image, rect_pt2[i], rect_pt2[(i + 1) % 4], Scalar(255, 0, 0), 2);
+		cout << "rect_pt1[ " + to_string(i) + "] = " << rect_pt1[i] << "\t";
+		cout << "rect_pt2[ " + to_string(i) + "] = " << rect_pt2[i] <<endl;
+	}
+	imshow("image", image);
+	waitKey();
+	return 0;
+}
+*/
+
+int main() {
+	Matx33f m1(1, 0, 2, -3, 4, 6, -1, -2, -3);
+	Matx31f m2(6, 30, 8);
+	Mat m1_inv1, dst1, dst2;
+
+	invert(m1, m1_inv1, DECOMP_LU);
+	dst1 = m1_inv1 * (Mat)m2;
+	solve(m1, m2, dst2, DECOMP_LU);
+
+	cout << "[m1_inv1] = " << endl << m1_inv1 << endl << endl;
+	cout << "[dst1] = " << dst1.t() << endl;
+
+	cout << "[dst2] = " << dst2.t() << endl;
+	return 0;
+
+}
 
