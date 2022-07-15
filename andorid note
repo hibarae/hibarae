@@ -1,0 +1,15 @@
+androd command
+
+git 설치 
+git init
+git add -A
+git remote add origin ~~URL~~
+git commit -m "file name"
+git push -f origin master 
+@ 파일 복사 @
+
+//git bash file rechange
+
+pwd
+cd 파일 위치 -> too many arguments error! -> " " insrert
+git clone ~~url~~ 
